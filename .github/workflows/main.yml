@@ -32,7 +32,7 @@ jobs:
         run: |
           export HOMEBREW_NO_AUTO_UPDATE=1
           brew install docker colima qemu
-          
+          colima start --cpu 4 --memory 8 --vm-type=vz --mount-type=virtiofs
       # Set up QEMU for multi-platform support
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
