@@ -19,7 +19,7 @@ jobs:
         os:
           # Uncomment if you need to include Ubuntu or Windows.
           # - ubuntu-latest
-          - macos-13
+          - macos-latest
           # - windows-latest
 
     steps:
@@ -45,7 +45,7 @@ jobs:
       # Set up Docker on macOS
       - name: Setup Docker on macOS
         if: runner.os == 'macos'
-        uses: douglascamata/setup-docker-macos-action@v1-alpha.13
+        uses: douglascamata/setup-docker-macos-action@v1-alpha
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
