@@ -46,7 +46,7 @@
           if: runner.os == 'macos'
           run: |
             export HOMEBREW_NO_AUTO_UPDATE=1
-              brew install docker colima
+              brew install docker colima qemu
 
       
        
