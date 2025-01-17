@@ -45,7 +45,8 @@ jobs:
       # Set up Docker on macOS
       - name: Setup Docker on macOS
         if: runner.os == 'macos'
-        uses: douglascamata/setup-docker-macos-action@v1.0.4
+        uses: douglascamata/setup-docker-macos-action@v1-alpha.16
+
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
