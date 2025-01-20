@@ -32,23 +32,24 @@ jobs:
       - name: Install Docker on macOS
         if: runner.os == 'macos'
         run: |
-          brew install docker docker-compose
-          brew services start docker
+          brew install lima docker
+          limactl start docker
+           limactl shell docker
 
-      # Start Docker on macOS (ensure daemon is running)
-      - name: Start Docker on macOS
-        if: runner.os == 'macos'
-        run: |
-          open -a Docker
-          sleep 30  # Wait for Docker to start
+      # # Start Docker on macOS (ensure daemon is running)
+      # - name: Start Docker on macOS
+      #   if: runner.os == 'macos'
+      #   run: |
+      #     open -a Docker
+      #     sleep 30  # Wait for Docker to start
 
       # Set up QEMU
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
-        with:
-          image: docker.io/tonistiigi/binfmt:latest
-          platforms: all
-          cache-image: true
+        # with:
+        #   image: docker.io/tonistiigi/binfmt:latest
+        #   platforms: all
+        #   cache-image: true
 
       # Set up Go
       - name: Set up Go
