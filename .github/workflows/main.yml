@@ -32,9 +32,8 @@ jobs:
       - name: Install Docker on macOS
         if: runner.os == 'macos'
         run: |
-          brew install lima docker
-          limactl start docker
-           limactl shell docker
+          brew install  docker
+     
 
       # # Start Docker on macOS (ensure daemon is running)
       # - name: Start Docker on macOS
