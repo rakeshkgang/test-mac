@@ -34,8 +34,8 @@ jobs:
         # run: |
         #   brew install  docker
         uses: docker/setup-docker-action@v4
-        env:
-          LIMA_START_ARGS: --cpus 4 --memory 8  
+        # env:
+        #   LIMA_START_ARGS: --cpus 4 --memory 8  
       # # Start Docker on macOS (ensure daemon is running)
       # - name: Start Docker on macOS
       #   if: runner.os == 'macos'
