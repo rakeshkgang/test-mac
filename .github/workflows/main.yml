@@ -29,11 +29,12 @@ jobs:
           terraform_version: ${{ env.TERRAFORM_VERSION }}
 
       # Install dependencies and Docker on macOS
-      - name: Install Docker on macOS
+      - name: Setup Docker on macOS
+        uses: douglascamata/setup-docker-macos-action@v1-alpha
         # if: runner.os == 'macos'
         # run: |
         #   brew install  docker
-        uses: docker/setup-docker-action@v3
+        # uses: docker/setup-docker-action@v3
         # env:
         #   LIMA_START_ARGS: --cpus 4 --memory 8  
       # # Start Docker on macOS (ensure daemon is running)
