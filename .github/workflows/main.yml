@@ -27,6 +27,7 @@ jobs:
 
       # Docker setup for macOS
       - name: Setup Docker on macOS
+        if: runner.os == 'macos'
         uses: douglascamata/setup-docker-macos-action@v1-alpha
 
       # Docker setup for Ubuntu
@@ -53,6 +54,7 @@ jobs:
         if: runner.os == 'Windows'
         run: |
           choco install docker-desktop
+          refreshenv
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
