@@ -1,63 +1,43 @@
-name: Test on all platforms
+  name: Test on all platforms
+  on:
+    # This is configured to run on pull requests. If desired you can change it to run on all pushes.
+    # be aware that windows and MacOS takes can take a while for setup and both of them incur extra expense for Actions.
+    pull_request:
+    # this will allow the tests to be run on demand
+    workflow_dispatch:
+  
+  env:
+    GO_VERSION: 1.23
 
-on:
-  push:
-  workflow_dispatch:
+  jobs:
+    test:
+      name: Test on all platforms
+      runs-on: ${{ matrix.os }}
+      strategy:
+        matrix:
+          os:
+            - ubuntu-latest
+            - macos-latest
+            - windows-latest
 
-env:
-  GO_VERSION: 1.23
+      steps:
+        - uses: actions/checkout@v4
 
-jobs:
-  test:
-    name: Test on all platforms
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os:
-          # - ubuntu-latest
-          - macos-13
-          # - windows-latest
+        - name: Set up Terraform
+          uses: hashicorp/setup-terraform@v3
+          with:
+            terraform_version: ${{ inputs.terraform_version }}
 
-    steps:
-      # Check out the repository
-      - uses: actions/checkout@v4
+        - name: Setup Docker on macOS
+          uses: douglascamata/setup-docker-macos-action@v1-alpha    
 
-      # Set up Terraform
-      - name: Set up Terraform
-        uses: hashicorp/setup-terraform@v3
-        with:
-          terraform_version: ${{ env.TERRAFORM_VERSION }}
+        - name: Set up QEMU
+          uses: docker/setup-qemu-action@v3      
+         
+        - name: Set up Go
+          uses: actions/setup-go@v5
+          with:
+            go-version: ${{ env.GO_VERSION }}
 
-      # Install dependencies and Docker on macOS
-      - name: Setup Docker on macOS
-        uses: douglascamata/setup-docker-macos-action@v1-alpha
-        # if: runner.os == 'macos'
-        # run: |
-        #   brew install  docker
-        # uses: docker/setup-docker-action@v3
-        # env:
-        #   LIMA_START_ARGS: --cpus 4 --memory 8  
-      # # Start Docker on macOS (ensure daemon is running)
-      # - name: Start Docker on macOS
-      #   if: runner.os == 'macos'
-      #   run: |
-      #     open -a Docker
-      #     sleep 30  # Wait for Docker to start
-
-      # Set up QEMU
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-        # with:
-        #   image: docker.io/tonistiigi/binfmt:latest
-        #   platforms: all
-        #   cache-image: true
-
-      # Set up Go
-      - name: Set up Go
-        uses: actions/setup-go@v5
-        with:
-          go-version: ${{ env.GO_VERSION }}
-
-      # Run tests
-      - name: Run Go tests
-        run: go test ./...
+        - name: Test
+          run: go test ./...
