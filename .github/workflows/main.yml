@@ -27,7 +27,6 @@ jobs:
 
       # Docker setup for macOS
       - name: Setup Docker on macOS
-        if: runner.os == 'macos'
         uses: douglascamata/setup-docker-macos-action@v1-alpha
 
       # Docker setup for Ubuntu
