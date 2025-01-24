@@ -25,19 +25,35 @@ jobs:
         with:
           terraform_version: ${{ inputs.terraform_version }}
 
+      # Docker setup for macOS
       - name: Setup Docker on macOS
         if: runner.os == 'macos'
         uses: douglascamata/setup-docker-macos-action@v1-alpha
 
-      - name: Setup Docker on Ubuntu and Windows
-        if: runner.os != 'macos'
+      # Docker setup for Ubuntu
+      - name: Setup Docker on Ubuntu
+        if: runner.os == 'Linux'
         run: |
-          if [[ ${{ matrix.os }} == "ubuntu-latest" ]]; then
-            sudo apt-get update
-            sudo apt-get install -y docker.io docker-compose
-          elif [[ ${{ matrix.os }} == "windows-latest" ]]; then
-            choco install docker-desktop
-          fi
+          sudo apt-get update
+          sudo apt-get install -y \
+            ca-certificates \
+            curl \
+            gnupg \
+            lsb-release
+          sudo mkdir -p /etc/apt/keyrings
+          curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+          echo \
+            "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+            $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+          sudo apt-get update
+          sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
+          sudo systemctl start docker
+
+      # Docker setup for Windows
+      - name: Setup Docker on Windows
+        if: runner.os == 'Windows'
+        run: |
+          choco install docker-desktop
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
