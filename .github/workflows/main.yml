@@ -32,7 +32,8 @@ jobs:
         if: matrix.os == 'macos-13'  
         uses: douglascamata/setup-docker-macos-action@v1-alpha    
 
-      - name: Set up QEMU
+      - name: Set up QEMU on Linux/macOS
+        if: matrix.os != 'windows-latest'
         uses: docker/setup-qemu-action@v3      
        
       - name: Set up Go
