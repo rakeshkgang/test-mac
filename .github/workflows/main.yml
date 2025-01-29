@@ -51,9 +51,15 @@
 #       - name: Test
 #         run: go test ./...
 name: Test on all platforms
+on:
+  push:  # Runs on every push
+  # pull_request:  # Runs on every PR
+  workflow_dispatch:  # Allows manual triggering
 
 env:
   GO_VERSION: 1.23
+  terraform_version: 1.10.5
+
 
 jobs:
   test:
